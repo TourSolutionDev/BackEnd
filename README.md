@@ -1,24 +1,91 @@
-# README
+# TourSolution BackEnd API
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Table of Contents
 
-Things you may want to cover:
+- [Prerequisites](#prerequisites)
+- [Getting Started](#getting-started)
+  - [Installation](#installation)
+  - [Usage](#usage)
 
-* Ruby version
+## Prerequisites
 
-* System dependencies
+Before you begin, ensure you have met the following requirements:
 
-* Configuration
+- [Docker](https://docs.docker.com/get-docker/) (version 25.0.2 or higher)
+- [Docker Compose](https://docs.docker.com/compose/install/) (version 1.25.3 or higher)
 
-* Database creation
+## Getting Started
 
-* Database initialization
+### Installation
 
-* How to run the test suite
+To get started, follow these steps:
 
-* Services (job queues, cache servers, search engines, etc.)
+1. Clone the repository:
 
-* Deployment instructions
+   ```bash
+   git clone https://github.com/TourSolutionDev/BackEnd
+   ```
 
-* ...
+2. Navigate to the project directory:
+
+   ```bash
+   cd BackEnd
+   ```
+
+3. Rename the `.env.example` file to `.env`:
+
+   ```bash
+   cp .env.example .env
+   ```
+
+4. Update the `.env` file with the appropriate values:
+
+   ```bash
+
+   POSTGRES_USER=your_username
+   POSTGRES_PASSWORD=your_password
+   POSTGRES_DB=your_database_name
+   ```
+
+5. Build the Docker containers:
+
+   ```bash
+   docker-compose build
+   ```
+
+### Usage
+
+To run the project, use the following commands:
+
+1. Start the Docker containers:
+
+   ```bash
+   docker-compose up
+   ```
+
+2. Install the dependencies:
+
+   ```bash
+   docker-compose run app bundle install
+   ```
+
+3. Set up the database:
+
+   ```bash
+   docker-compose run app rails db:create
+   docker-compose run app rails db:migrate
+   ```
+
+4. Start the Rails server:
+
+   ```bash
+   docker-compose up
+   ```
+
+5. Access the application at `http://localhost:3000` or `http://127.0.0.0:3000` in your web browser.
+
+6. To stop the Docker containers, use the following command:
+
+   ```bash
+   docker-compose down
+   ```
