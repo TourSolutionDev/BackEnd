@@ -82,7 +82,7 @@ To run the project, use the following commands:
    docker-compose up
    ```
 
-5. Access the application at `http://localhost:3000` or `http://127.0.0.0:3000` in your web browser.
+5. Access the application at `http://localhost:3000` or `http://127.0.0.1:3000` in your web browser.
 
 6. To stop the Docker containers, use the following command:
 
