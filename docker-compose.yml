@@ -11,9 +11,13 @@ services:
       - .env
 
   app:
+    user: "${UID}:${GID}"
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        UID: ${UID}
+        GID: ${GID}
     command: bash -c "rm -f tmp/pids/server.pid && rails s -p 3000 -b '0.0.0.0'"
     volumes:
       - .:/app
