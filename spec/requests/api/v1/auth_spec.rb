@@ -16,6 +16,12 @@ RSpec.describe 'API::V1::Auth', type: :request do
 
       expect(response).to have_http_status(:unauthorized)
     end
+
+    it 'returns unauthorized status with empty request' do
+      post '/api/v1/auth/sign_in', params: {}
+      expect(response).to have_http_status(:unauthorized)
+    end
+
   end
 
   describe 'POST /api/v1/auth/sign_out' do
@@ -33,7 +39,30 @@ RSpec.describe 'API::V1::Auth', type: :request do
 
       expect(response).to have_http_status(:success)
     end
+
+    it 'returns unauthorized status without authentication headers' do
+      delete '/api/v1/auth/sign_out', headers: {}
+      expect(response).to have_http_status(:not_found)
+      expect(response.body).to include('User was not found or was not logged in.')
+
+    end
+
   end
+
+  #test for user registration
+  describe 'POST /api/v1/auth' do
+    it 'registers a new user' do
+      user_attributes = attributes_for(:user) # Using FactoryBot's attributes_for method
+      post '/api/v1/auth', params: user_attributes
+      expect(response).to have_http_status(:success)
+      expect(response.headers.keys).to include('client', 'access-token', 'uid')
+    end
+
+    it 'returns unprocessable_entity status with invalid user attributes' do
+      post '/api/v1/auth', params: { user: { email: '', password: 'password' } }
+      expect(response).to have_http_status(:unprocessable_entity)
+    end
+end
 
 
   # Add more test cases for other authentication endpoints as needed
