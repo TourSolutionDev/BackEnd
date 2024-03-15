@@ -35,7 +35,7 @@ RSpec.describe "/profiles", type: :request do
   describe "GET /index" do
     it "renders a successful response" do
       Profile.create! valid_attributes
-      get profiles_url, headers: valid_headers, as: :json
+      get api_v1_profiles_url, headers: valid_headers, as: :json
       expect(response).to be_successful
     end
   end
@@ -52,13 +52,13 @@ RSpec.describe "/profiles", type: :request do
     context "with valid parameters" do
       it "creates a new Profile" do
         expect {
-          post profiles_url,
+          post api_v1_profiles_url,
                params: { profile: valid_attributes }, headers: valid_headers, as: :json
         }.to change(Profile, :count).by(1)
       end
 
       it "renders a JSON response with the new profile" do
-        post profiles_url,
+        post api_v1_profiles_url,
              params: { profile: valid_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:created)
         expect(response.content_type).to match(a_string_including("application/json"))
@@ -68,13 +68,13 @@ RSpec.describe "/profiles", type: :request do
     context "with invalid parameters" do
       it "does not create a new Profile" do
         expect {
-          post profiles_url,
+          post api_v1_profiles_url,
                params: { profile: invalid_attributes }, as: :json
         }.to change(Profile, :count).by(0)
       end
 
       it "renders a JSON response with errors for the new profile" do
-        post profiles_url,
+        post api_v1_profiles_url,
              params: { profile: invalid_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to match(a_string_including("application/json"))
