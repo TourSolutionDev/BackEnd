@@ -8,4 +8,5 @@ class User < ActiveRecord::Base
     :recoverable, :rememberable, :validatable
   include DeviseTokenAuth::Concerns::User
   validates :email, presence: true, uniqueness: { case_sensitive: false }, format: { with: URI::MailTo::EMAIL_REGEXP }
+  has_one :profile, dependent: :destroy
 end
