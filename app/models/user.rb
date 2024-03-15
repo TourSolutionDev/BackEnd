@@ -8,4 +8,12 @@ class User < ActiveRecord::Base
     :recoverable, :rememberable, :validatable
   include DeviseTokenAuth::Concerns::User
   validates :email, presence: true, uniqueness: { case_sensitive: false }, format: { with: URI::MailTo::EMAIL_REGEXP }
+  has_one :profile, dependent: :destroy # if user is deleted, profile is deleted
+  # after_create :create_profile  # creates a profile for a user after sign up
+
+  # private
+
+  # def create_profile
+  #   Profile.create(user_id: id)
+  # end
 end
