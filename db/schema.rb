@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_17_162150) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_17_163023) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -34,6 +34,14 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_17_162150) do
     t.index ["email"], name: "index_admins_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true
     t.index ["uid", "provider"], name: "index_admins_on_uid_and_provider", unique: true
+  end
+
+  create_table "api_v1_activities", force: :cascade do |t|
+    t.string "name"
+    t.bigint "tour_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tour_id"], name: "index_api_v1_activities_on_tour_id"
   end
 
   create_table "api_v1_categories", force: :cascade do |t|
@@ -121,6 +129,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_17_162150) do
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
+  add_foreign_key "api_v1_activities", "api_v1_tours", column: "tour_id"
   add_foreign_key "api_v1_categories", "admins"
   add_foreign_key "api_v1_destinations", "api_v1_tours", column: "tour_id"
   add_foreign_key "api_v1_prices", "api_v1_tours", column: "tour_id"
