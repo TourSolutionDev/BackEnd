@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_17_060802) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_17_063135) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -42,6 +42,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_17_060802) do
     t.datetime "updated_at", null: false
     t.bigint "admin_id", null: false
     t.index ["admin_id"], name: "index_api_v1_categories_on_admin_id"
+  end
+
+  create_table "api_v1_prices", force: :cascade do |t|
+    t.float "amount"
+    t.string "currency"
+    t.bigint "tour_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tour_id"], name: "index_api_v1_prices_on_tour_id"
   end
 
   create_table "api_v1_tour_dates", force: :cascade do |t|
@@ -104,6 +113,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_17_060802) do
   end
 
   add_foreign_key "api_v1_categories", "admins"
+  add_foreign_key "api_v1_prices", "api_v1_tours", column: "tour_id"
   add_foreign_key "api_v1_tour_dates", "admins"
   add_foreign_key "api_v1_tour_dates", "api_v1_tours", column: "tour_id"
   add_foreign_key "api_v1_tours", "admins"
