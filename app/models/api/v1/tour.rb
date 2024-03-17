@@ -4,6 +4,7 @@ class Api::V1::Tour < ApplicationRecord
   has_many :tour_dates
   has_many :prices
   has_many :destionations
+  has_many :activities
   validates :name, :description, :duration, presence: true
   validates :name, uniqueness: true
   validates :duration, numericality: { only_integer: true, greater_than: 0 }
