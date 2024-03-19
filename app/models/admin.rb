@@ -9,6 +9,4 @@ class Admin < ActiveRecord::Base
   include DeviseTokenAuth::Concerns::User
   validates :email, presence: true, uniqueness: { case_sensitive: false }, format: { with: URI::MailTo::EMAIL_REGEXP }
   has_many :tours
-  has_many :categories
-  has_many :tour_dates
 end
