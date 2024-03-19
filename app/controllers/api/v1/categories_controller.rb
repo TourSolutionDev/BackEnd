@@ -1,5 +1,6 @@
 class Api::V1::CategoriesController < ApplicationController
   before_action :set_api_v1_category, only: %i[ show update destroy ]
+  before_action :authenticate_api_v1_admin!
 
   # GET /api/v1/categories
   def index
@@ -46,6 +47,6 @@ class Api::V1::CategoriesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def api_v1_category_params
-      params.require(:api_v1_category).permit(:name, :admin_id)
+      params.require(:api_v1_category).permit(:name)
     end
 end
