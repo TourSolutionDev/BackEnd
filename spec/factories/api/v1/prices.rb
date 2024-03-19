@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :api_v1_price, class: 'Api::V1::Price' do
-    amount { 1.5 }
-    currency { "MyString" }
-    tour { nil }
+    amount { Faker::Number.number(digits: 4) }
+    currency { Faker::Currency.code }
+    tour { create(:api_v1_tour)}
   end
 end
