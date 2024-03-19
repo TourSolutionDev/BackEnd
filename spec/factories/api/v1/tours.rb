@@ -2,7 +2,7 @@ FactoryBot.define do
   factory :api_v1_tour, class: 'Api::V1::Tour' do
     name { Faker::Name.unique.name }
     description { Faker::Lorem.paragraph }
-    duration { Faker::Number.number(digits: 1) }
+    duration { Faker::Number.within(range: 1..10) }
     image { Faker::Avatar.image }
     category { create(:api_v1_category)}
     admin { create(:admin)}
