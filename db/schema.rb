@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_17_180622) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_19_063410) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -42,6 +42,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_17_180622) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["tour_id"], name: "index_api_v1_activities_on_tour_id"
+  end
+
+  create_table "api_v1_bookings", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "tour_id", null: false
+    t.string "booking_status", default: "pending", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tour_id"], name: "index_api_v1_bookings_on_tour_id"
+    t.index ["user_id"], name: "index_api_v1_bookings_on_user_id"
   end
 
   create_table "api_v1_categories", force: :cascade do |t|
@@ -126,6 +136,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_17_180622) do
   end
 
   add_foreign_key "api_v1_activities", "api_v1_tours", column: "tour_id"
+  add_foreign_key "api_v1_bookings", "api_v1_tours", column: "tour_id"
+  add_foreign_key "api_v1_bookings", "users"
   add_foreign_key "api_v1_destinations", "api_v1_tours", column: "tour_id"
   add_foreign_key "api_v1_prices", "api_v1_tours", column: "tour_id"
   add_foreign_key "api_v1_tour_dates", "api_v1_tours", column: "tour_id"
