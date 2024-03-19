@@ -127,15 +127,25 @@ RSpec.describe "/api/v1/tours", type: :request do
   describe "PATCH /update" do
     context "with valid parameters" do
       let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
+        {
+      name: 'Tour Name new',
+      description: 'Tour Description',
+      duration: 5,
+      category_id: category.id,
+      tour_dates_attributes: [start_date: "2023-02-20", end_date: "2023-06-25"],
+      prices_attributes: [{ amount: 1175, currency: "BAM" }],
+      destinations_attributes: [{ name: "Azzie Swaniawski DDS", description: "Qui hic rem. Quam veritatis aut. Labore rerum sint." }],
+      activities_attributes: [{ name: "Marlena Bogan VM" }],
+      admin: admin
       }
+    }
 
       it "updates the requested api_v1_tour" do
         tour = Api::V1::Tour.create! valid_attributes
         patch api_v1_tour_url(tour),
               params: { api_v1_tour: new_attributes }, headers: valid_headers, as: :json
         tour.reload
-        skip("Add assertions for updated state")
+        expect(tour.name).to eq('Tour Name new')
       end
 
       it "renders a JSON response with the api_v1_tour" do
