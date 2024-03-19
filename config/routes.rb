@@ -1,6 +1,11 @@
 Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
+      resources :cancellations
+      resources :bookings do
+        #create route for cancel action like this: patch /api/v1/bookings/:id/cancel
+        patch :cancel, on: :member
+      end
       resources :activities
       resources :destinations
       resources :prices
