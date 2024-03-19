@@ -5,5 +5,6 @@ class Api::V1::Booking < ApplicationRecord
   validates :tour_id, :user_id, :booking_status, presence: true
   scope :by_user, ->(user) { where(user: user) }
   has_one :profile, through: :user
-  validates :user_id, uniqueness: { scope: :tour_id, message: "You have already booked this tour" }
+  # validates :user_id, uniqueness: { scope: :tour_id, message: "You have already booked this tour" }
+  has_one :cancellation, class_name: 'Api::V1::Cancellation', dependent: :destroy
 end
