@@ -16,25 +16,56 @@ RSpec.describe "/api/v1/tours", type: :request do
   # This should return the minimal set of attributes required to create a valid
   # Api::V1::Tour. As you add validations to Api::V1::Tour, be sure to
   # adjust the attributes here as well.
-  let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+  let(:admin) { create(:admin) }
+  let(:category) { create(:api_v1_category) }
+
+
+ let(:valid_attributes) {
+  # attributes_for(:api_v1_tour)
+  {
+      name: 'Tour Name',
+      description: 'Tour Description',
+      duration: 5,
+      category_id: category.id,
+      tour_dates_attributes: [start_date: "2023-02-20", end_date: "2023-06-25"],
+      prices_attributes: [{ amount: 1175, currency: "BAM" }],
+      destinations_attributes: [{ name: "Azzie Swaniawski DDS", description: "Qui hic rem. Quam veritatis aut. Labore rerum sint." }],
+      activities_attributes: [{ name: "Marlena Bogan VM" }],
+      admin: admin
+
   }
+}
 
   let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
+    {
+      name: '',
+      description: '',
+      duration: '',
+      category_id: category.id,
+      tour_dates_attributes: [start_date: "2023-02-20", end_date: "2023-06-25"],
+      prices_attributes: [{ amount: 1175, currency: "BAM" }],
+      destinations_attributes: [{ name: "Azzie Swaniawski DDS", description: "Qui hic rem. Quam veritatis aut. Labore rerum sint." }],
+      activities_attributes: [{ name: "Marlena Bogan VM" }]
+    }
   }
 
-  # This should return the minimal set of values that should be in the headers
-  # in order to pass any filters (e.g. authentication) defined in
-  # Api::V1::ToursController, or in your router and rack
-  # middleware. Be sure to keep this updated too.
+  # authenticate the admin
+  # Use the admin's authentication headers in request
+  let(:admin_headers) { admin.create_new_auth_token }
+  #this will generate a new token for the admin and store it in the admin_headers variable
+
+  # Use the admin's authentication headers in your request headers
   let(:valid_headers) {
-    {}
+    {
+      'Content-Type': 'application/json',
+      'access-token': admin_headers['access-token'],
+      'uid': admin_headers['uid'],
+      'client': admin_headers['client']
+    }
   }
 
   describe "GET /index" do
     it "renders a successful response" do
-      Api::V1::Tour.create! valid_attributes
       get api_v1_tours_url, headers: valid_headers, as: :json
       expect(response).to be_successful
     end
@@ -43,10 +74,12 @@ RSpec.describe "/api/v1/tours", type: :request do
   describe "GET /show" do
     it "renders a successful response" do
       tour = Api::V1::Tour.create! valid_attributes
-      get api_v1_tour_url(tour), as: :json
+      get api_v1_tour_url(tour), headers: valid_headers, as: :json
       expect(response).to be_successful
     end
   end
+
+
 
   describe "POST /create" do
     context "with valid parameters" do
@@ -55,23 +88,32 @@ RSpec.describe "/api/v1/tours", type: :request do
           post api_v1_tours_url,
                params: { api_v1_tour: valid_attributes }, headers: valid_headers, as: :json
         }.to change(Api::V1::Tour, :count).by(1)
+
       end
 
       it "renders a JSON response with the new api_v1_tour" do
         post api_v1_tours_url,
              params: { api_v1_tour: valid_attributes }, headers: valid_headers, as: :json
-        expect(response).to have_http_status(:created)
-        expect(response.content_type).to match(a_string_including("application/json"))
-      end
-    end
+             expect(response).to have_http_status(:created)
+             expect(response.content_type).to match(a_string_including("application/json"))
+            end
+          end
 
-    context "with invalid parameters" do
-      it "does not create a new Api::V1::Tour" do
+          context "with invalid parameters" do
+    it "does not create a new Api::V1::Tour" do
+          initial_count = Api::V1::Tour.count
+
+        # Send a request with invalid attributes to create a tour
         expect {
-          post api_v1_tours_url,
-               params: { api_v1_tour: invalid_attributes }, as: :json
+        post api_v1_tours_url,
+            params: {
+              api_v1_tour: invalid_attributes,
+            headers: valid_headers,
+            as: :json
+          }
+        # Verify that the count of tours hasn't changed
         }.to change(Api::V1::Tour, :count).by(0)
-      end
+    end
 
       it "renders a JSON response with errors for the new api_v1_tour" do
         post api_v1_tours_url,
