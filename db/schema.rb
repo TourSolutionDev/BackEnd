@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_14_222734) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_17_180622) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -34,6 +34,61 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_14_222734) do
     t.index ["email"], name: "index_admins_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true
     t.index ["uid", "provider"], name: "index_admins_on_uid_and_provider", unique: true
+  end
+
+  create_table "api_v1_activities", force: :cascade do |t|
+    t.string "name"
+    t.bigint "tour_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tour_id"], name: "index_api_v1_activities_on_tour_id"
+  end
+
+  create_table "api_v1_categories", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "api_v1_destinations", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.bigint "tour_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tour_id"], name: "index_api_v1_destinations_on_tour_id"
+  end
+
+  create_table "api_v1_prices", force: :cascade do |t|
+    t.float "amount"
+    t.string "currency"
+    t.bigint "tour_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tour_id"], name: "index_api_v1_prices_on_tour_id"
+  end
+
+  create_table "api_v1_tour_dates", force: :cascade do |t|
+    t.date "start_date"
+    t.date "end_date"
+    t.bigint "tour_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tour_id"], name: "index_api_v1_tour_dates_on_tour_id"
+  end
+
+  create_table "api_v1_tours", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "description", null: false
+    t.integer "duration", null: false
+    t.string "image"
+    t.bigint "category_id", null: false
+    t.bigint "admin_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["admin_id"], name: "index_api_v1_tours_on_admin_id"
+    t.index ["category_id"], name: "index_api_v1_tours_on_category_id"
+    t.index ["name"], name: "index_api_v1_tours_on_name", unique: true
   end
 
   create_table "profiles", force: :cascade do |t|
@@ -70,5 +125,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_14_222734) do
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
+  add_foreign_key "api_v1_activities", "api_v1_tours", column: "tour_id"
+  add_foreign_key "api_v1_destinations", "api_v1_tours", column: "tour_id"
+  add_foreign_key "api_v1_prices", "api_v1_tours", column: "tour_id"
+  add_foreign_key "api_v1_tour_dates", "api_v1_tours", column: "tour_id"
+  add_foreign_key "api_v1_tours", "admins"
+  add_foreign_key "api_v1_tours", "api_v1_categories", column: "category_id"
   add_foreign_key "profiles", "users"
 end
