@@ -4,4 +4,6 @@ class Api::V1::Booking < ApplicationRecord
   belongs_to :tour
   validates :tour_id, :user_id, :booking_status, presence: true
   scope :by_user, ->(user) { where(user: user) }
+  has_one :profile, through: :user
+  validates :user_id, uniqueness: { scope: :tour_id, message: "You have already booked this tour" }
 end
