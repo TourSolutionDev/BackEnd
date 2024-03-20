@@ -20,8 +20,8 @@ RSpec.describe "Api::V1::Reviews", type: :request do
   }
 
   before do
-    # Book the tour and set status to confirmed
-    create(:api_v1_booking, tour: tour, user: user, booking_status: "confirmed")
+    # Book the tour and set status to completed
+    create(:api_v1_booking, tour: tour, user: user, booking_status: "completed")
   end
 
   let(:valid_headers) {
