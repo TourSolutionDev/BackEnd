@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
+      # resources :reviews
       resources :cancellations
       resources :bookings do
         #create route for cancel action like this: patch /api/v1/bookings/:id/cancel
@@ -10,7 +11,14 @@ Rails.application.routes.draw do
       resources :destinations
       resources :prices
       resources :tour_dates
-      resources :tours
+      resources :tours do
+        resources :reviews, only: [:index, :create, :show, :update, :destroy]
+        # GET /api/v1/tours/:tour_id/reviews,
+        # POST /api/v1/tours/:tour_id/reviews
+        # GET /api/v1/tours/:tour_id/reviews/:id
+        # PATCH/PUT /api/v1/tours/:tour_id/reviews/:id
+        # DELETE /api/v1/tours/:tour_id/reviews/:id
+      end
       resources :categories
       #resource :profiles # it will create all the routes for profiles like index, show, create, update, destroy
       # the index route will be like this: /api/v1/profiles
