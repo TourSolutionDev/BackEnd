@@ -17,25 +17,23 @@ class Api::V1::ToursController < ApplicationController
   # POST /api/v1/tours
   def create
     if params[:api_v1_tour][:category_id].present?
-    # If category_id is present, it means an existing category is selected
-    @api_v1_tour = Api::V1::Tour.new(api_v1_tour_params)
+      # If category_id is present, it means an existing category is selected
+      @api_v1_tour = Api::V1::Tour.new(api_v1_tour_params)
     else
       # If category_id is not present, it means a new category is being created
-      @category = Api::V1::Category.new(category_params)
-      @category.save! #
+      @category = Api::V1::Category.find_or_initialize_by(category_params)
+      @category.save! if @category.new_record? # create the category if it doesnt exist or is new
 
       @api_v1_tour = @category.tours.build(api_v1_tour_params)
     end
 
     @api_v1_tour.admin = current_api_v1_admin
 
-
     if @api_v1_tour.save
       render json: @api_v1_tour, status: :created, location: @api_v1_tour
     else
       render json: @api_v1_tour.errors, status: :unprocessable_entity
     end
-
   end
 
   # PATCH/PUT /api/v1/tours/1
