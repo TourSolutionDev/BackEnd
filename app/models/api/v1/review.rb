@@ -36,7 +36,7 @@ class Api::V1::Review < ApplicationRecord
 
   def user_can_review?
     booking = user&.bookings&.find_by(tour_id: tour_id)
-    if booking.nil? || !booking.confirmed?
+    if booking.nil? || !booking.completed?
       errors.add(:error, "You can only review the tour if you have booked the tour and it is completed.")
     end
   end
