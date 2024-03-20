@@ -14,5 +14,6 @@ class Api::V1::Tour < ApplicationRecord
   validates :duration, numericality: { only_integer: true, greater_than: 0 }
   has_many :bookings, dependent: :destroy
   has_many :users, through: :bookings
+  has_many :reviews, class_name: 'Api::V1::Review', dependent: :destroy
 
 end
