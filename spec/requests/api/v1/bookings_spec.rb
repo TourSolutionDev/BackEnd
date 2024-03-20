@@ -143,6 +143,23 @@ RSpec.describe "/api/v1/bookings", type: :request do
       }.to change(Api::V1::Booking, :count).by(-1)
     end
   end
+  describe "PATCH /cancel" do
 
+      it "cancels the requested api_v1_booking for user" do
+        booking = create(:api_v1_booking, user: user, tour: tour)
+        # patch cancel_api_v1_booking_url(booking), headers: valid_user_headers, as: :json
+        patch "/api/v1/bookings/#{booking.id}/cancel", params: { cancellation: { reason: "Reason for cancellation" } }, headers: valid_user_headers, as: :json
+        booking.reload
+        expect(booking.booking_status).to eq("cancelled")
+      end
+
+      it "renders a JSON response with the api_v1_booking for user" do
+        booking = create(:api_v1_booking, user: user, tour: tour)
+        patch cancel_api_v1_booking_url(booking), params: { cancellation: { reason: "Reason for cancellation" } }, headers: valid_user_headers, as: :json
+        expect(response).to have_http_status(:ok) # Make sure response status is OK
+        expect(response.content_type).to match(a_string_including("application/json"))
+      end
+
+    end
 end
 end
