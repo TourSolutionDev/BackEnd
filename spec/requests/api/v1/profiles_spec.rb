@@ -66,12 +66,12 @@ RSpec.describe "/api/v1/profiles", type: :request do
     context "with valid parameters" do
       it "creates a new profile" do
         expect {
-          post api_v1_profiles_url, params: valid_attributes, headers: valid_user_headers, as: :json
+          post api_v1_profile_url, params: valid_attributes, headers: valid_user_headers, as: :json
         }.to change(Profile, :count).by(1)
       end
 
       it "renders a JSON response with the new profile" do
-        post api_v1_profiles_url, params: valid_attributes, headers: valid_user_headers, as: :json
+        post api_v1_profile_url, params: valid_attributes, headers: valid_user_headers, as: :json
         expect(response).to have_http_status(:created)
         expect(response.content_type).to match(a_string_including("application/json"))
       end
@@ -80,12 +80,12 @@ RSpec.describe "/api/v1/profiles", type: :request do
     context "with invalid parameters" do
       it "does not create a new profile" do
         expect {
-          post api_v1_profiles_url, params: invalid_attributes, headers: valid_user_headers, as: :json
+          post api_v1_profile_url, params: invalid_attributes, headers: valid_user_headers, as: :json
         }.to change(Profile, :count).by(0)
       end
 
       it "renders a JSON response with errors for the new profile" do
-        post api_v1_profiles_url, params: invalid_attributes, headers: valid_user_headers, as: :json
+        post api_v1_profile_url, params: invalid_attributes, headers: valid_user_headers, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to match(a_string_including("application/json"))
       end
