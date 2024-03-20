@@ -21,8 +21,7 @@ RSpec.describe "/api/v1/bookings", type: :request do
     {
       user_id: nil,
       tour_id: nil,
-      booking_status: nil,
-      profile_attributes: { first_name: nil, last_name: nil, phone_number: nil, passport: nil }
+      booking_status: nil
     }
   }
 

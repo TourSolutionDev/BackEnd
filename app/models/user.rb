@@ -12,6 +12,8 @@ class User < ActiveRecord::Base
   # after_create :create_profile  # creates a profile for a user after sign up
   has_many :bookings, class_name: 'Api::V1::Booking'
   has_many :tours, through: :bookings
+  has_many :cancellations, through: :bookings
+  has_many :reviews, dependent: :destroy, class_name: 'Api::V1::Review'
   # private
 
   # def create_profile
