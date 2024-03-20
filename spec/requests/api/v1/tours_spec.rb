@@ -20,21 +20,20 @@ RSpec.describe "/api/v1/tours", type: :request do
   let(:category) { create(:api_v1_category) }
 
 
- let(:valid_attributes) {
-  # attributes_for(:api_v1_tour)
+let(:valid_attributes) {
   {
-      name: 'Tour Name',
-      description: 'Tour Description',
-      duration: 5,
-      category_id: category.id,
-      tour_dates_attributes: [start_date: "2023-02-20", end_date: "2023-06-25"],
-      prices_attributes: [{ amount: 1175, currency: "BAM" }],
-      destinations_attributes: [{ name: "Azzie Swaniawski DDS", description: "Qui hic rem. Quam veritatis aut. Labore rerum sint." }],
-      activities_attributes: [{ name: "Marlena Bogan VM" }],
-      admin: admin
-
+    name: 'Tour Name',
+    description: 'Tour Description',
+    duration: 5,
+    category_id: category.id,
+    tour_dates_attributes: [{ start_date: Date.today + 1, end_date: Date.today + 5 }], # Adjusted tour dates to be in the future
+    prices_attributes: [{ amount: 1175, currency: "BAM" }],
+    destinations_attributes: [{ name: "Azzie Swaniawski DDS", description: "Qui hic rem. Quam veritatis aut. Labore rerum sint." }],
+    activities_attributes: [{ name: "Marlena Bogan VM" }],
+    admin: admin
   }
 }
+
 
   let(:invalid_attributes) {
     {
@@ -127,18 +126,19 @@ RSpec.describe "/api/v1/tours", type: :request do
   describe "PATCH /update" do
     context "with valid parameters" do
       let(:new_attributes) {
-        {
-      name: 'Tour Name new',
+    {
+      name: 'Tour Name new', # Updated tour name
       description: 'Tour Description',
       duration: 5,
       category_id: category.id,
-      tour_dates_attributes: [start_date: "2023-02-20", end_date: "2023-06-25"],
+      tour_dates_attributes: [{ start_date: Date.today + 1, end_date: Date.today + 5 }],
       prices_attributes: [{ amount: 1175, currency: "BAM" }],
       destinations_attributes: [{ name: "Azzie Swaniawski DDS", description: "Qui hic rem. Quam veritatis aut. Labore rerum sint." }],
       activities_attributes: [{ name: "Marlena Bogan VM" }],
       admin: admin
-      }
     }
+  }
+
 
       it "updates the requested api_v1_tour" do
         tour = Api::V1::Tour.create! valid_attributes
