@@ -1,10 +1,10 @@
 class Api::V1::ToursController < ApplicationController
   before_action :set_api_v1_tour, only: %i[ show update destroy ]
-  before_action :authenticate_api_v1_admin!
+  before_action :authenticate_api_v1_admin!, only: %i[ create update destroy ]
 
   # GET /api/v1/tours
   def index
-    @api_v1_tours = Api::V1::Tour.all
+    @api_v1_tours = Api::V1::Tour.includes(:tour_dates, :prices, :destinations, :activities, :category, :reviews).all
 
     render json: @api_v1_tours
   end

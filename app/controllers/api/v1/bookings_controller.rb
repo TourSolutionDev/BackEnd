@@ -1,6 +1,7 @@
 class Api::V1::BookingsController < ApplicationController
   before_action :set_api_v1_booking, only: %i[ show update destroy ]
-  before_action :authenticate_api_v1_user!, only: %i[ create update destroy ]
+  before_action :authenticate_api_v1_user!, only: %i[ create show ]
+  before_action :authenticate_api_v1_admin!, only: %i[ index update delete ]
 
   # GET /api/v1/bookings
   def index
