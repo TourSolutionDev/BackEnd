@@ -40,7 +40,7 @@ RSpec.describe Api::V1::Booking, type: :model do
 
   describe 'enum' do
     it 'should have the correct enum values' do
-      expect(described_class.booking_statuses.keys).to eq(%w[pending confirmed cancelled])
+      expect(described_class.booking_statuses.keys).to eq(%w[pending confirmed cancelled completed])
     end
   end
 end
