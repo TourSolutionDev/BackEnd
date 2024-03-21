@@ -64,5 +64,5 @@ DeviseTokenAuth.setup do |config|
   # send email, set it to true. (This is a setting for compatibility)
   config.send_confirmation_email = true
   config.change_headers_on_each_request = false
-  config.default_confirm_success_url = 'http://localhost:3000'
+  config.default_confirm_success_url = "http://localhost:3000/confirmation_success.html"
 end
